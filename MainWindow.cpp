@@ -372,13 +372,12 @@ void MainWindow::populate_recent_file_menu() {
         ui->menu_open_recent->removeAction(a);
         delete a;
     }
-    for (size_t i = recent_files.size(); i > 0; --i) {
-        QString s = recent_files[i-1];
-        QFileInfo info(s);
-        if (! info.exists()) {
+    for (int i=recent_files.size()-1; i>=0; i--) {
+        if (! QFile(recent_files.at(i)).exists()) {
             recent_files.removeAt(i);
-            continue;
         }
+    }
+    for (QString s: recent_files) {
         ui->menu_open_recent->addAction(s);
         QListWidgetItem *item = new QListWidgetItem(s);
         item->setToolTip(s);
